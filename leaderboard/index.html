@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <!-- Required meta tags -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+        <title>MoraXtreme 6.0 | Leaderboard</title>
+        <!-- Favicon -->
+        <link href="../img/favicon.ico" rel="icon">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        </script>
+        <script
+        src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+        <script>
+            //paste this code under head tag or in a seperate js file.
+            // Wait for window load
+            $(window).on('load',function () {
+              // Animate loader off screen
+            //   $(".se-pre-con").fadeOut("slow");
+              var loader = document.getElementById("preloader");
+              loader.style.display='none';
+              
+            });
+        </script>
+        <style>
+            .link {
+                margin: 5 auto;
+            }
+            .linkButton {
+                width: 20%;
+                margin-left: 40%;
+                margin-top: 3rem;
+                margin-bottom: 1rem;
+                border-radius: 0;
+                background: #139e26 !important;
+                color: rgb(255, 255, 255);
+                font-weight: bold;
+                transition: 0.5ms;
+                font-size: 1vw;
+            }
+
+            .link:hover{
+                background: white;
+                text-decoration-color: #139e26;
+            }
+
+            .note {
+                width: 60%;
+                margin-left: 20%;
+                text-align: center;
+            }
+
+            @media only screen and (max-width: 767px) {
+                .linkButton {
+                    width: 50%;
+                    margin-left: 25%;
+                    margin-top: 1rem;
+                    font-size: 2.5vw;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="se-pre-con" id ="preloader"></div>
+        <button onclick="topFunction()" id="myBtn" title="Go to top">&#11165;</button>
+        <div class="full-container">
+            <div class="title-leaderboard">
+                <a href="../index.html"><img src="images/logo.png" alt="" class="logo"></a>
+                <br/>
+                <p class="glow">Leaderboard</p>
+            </div>
+            <div class="table-outer">
+            <div class="tablecontainer">
+        <!-- table for showing data -->
+                <table class="table table-hover table-striped table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 20%;"></th>
+                            <th scope='col' style='text-align:left;width:56%;'>Team Name</th>
+                            <th scope="col" style='text-align:left;width:12%'>Score</th>
+                            <th scope="col" style='text-align:center;width:12%'>Rank</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data">
+                        
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            <div class="link">
+                <a href="https://www.hackerrank.com/contests/moraxtreme6/leaderboard" target="_blank" class="btn linkButton">Hackerrank Leaderboard</a>
+            </div>
+            <hr/>
+            <div class="note">
+                <h6><strong>Note:</strong> The final result will be released after the final decision of the question panel.</h6>
+            </div>
+            
+        </div>
+        
+        <script src="data.js"></script>
+        <script src="result.js"></script>
+        <script>
+            var arrx = getNames();
+            // console.log(arrx);
+            var y=[];
+            var nms=[];
+            for (i = 0; i < arrx.length; i++) {
+                out = arrx[i].H_username;
+                nm = arrx[i].Name;
+                y.push(out);
+                nms.push(nm);
+            }
+            var arr = [];
+            var names = [];
+            var z = [];
+            var s = [];
+
+            var competitionName = 'moraxtreme6'; // Replace your contest name
+            try {
+                fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.hackerrank.com/rest/contests/'+ competitionName +'/leaderboard?offset=0&limit=50&include_practice=true')}`) 
+                    .then(response => {
+                      if (response.ok) 
+                        return response.json();
+                      throw new Error('Network response was not ok.');
+                    })
+                    .then(data => {
+                        //var arrData = JSON.parse(data.contents);
+                        arrData = getResults();
+                        // console.log(arrData);
+                        if(arrData) {
+                            arrData.map(res => arr.push(res));
+                            // console.log(arr[0]);
+                        } else {
+                            console.log('Array is null');
+                        }
+
+                        var text = "";
+                        var count=0;
+                        var subC =0;
+                        var preScore=1000000000000;
+                        var displayName =""
+                        arr.map((item) => {
+                            if (y.indexOf(item['hacker'])!=-1){
+                                if (item['score']!=preScore){
+                                    count++;
+                                    count+=subC;
+                                    subC=0;
+                                }
+                                else{
+                                    subC++;
+                                }
+                                preScore=item['score'];
+                                displayName =nms[y.indexOf(item['hacker'])];
+                                //console.log(displayName);
+                                if (count == 1){
+                                    text += "<tr style='vertical-align:middle' ><th scope='row' style='text-align:center;vertical-align:middle'><img src='images/trophy_1.png' class='trophy'/><td class='nametd'>" + displayName + "</td><td>" + item['score'] + "</td><td style='text-align:center !important;'>" + count + "</td></tr>";
+                                }
+                                else if (count == 2){
+                                    text += "<tr style='vertical-align:middle' ><th scope='row' style='text-align:center;vertical-align:middle'><img src='images/trophy_2.png' class='trophy'/><td class='nametd'>" + displayName + "</td><td>" + item['score'] + "</td><td style='text-align:center !important;'>" + count + "</td></tr>";
+                                }
+                                else if (count == 3){
+                                    text += "<tr style='vertical-align:middle' ><th scope='row' style='text-align:center;vertical-align:middle'><img src='images/trophy_3.png' class='trophy'/><td class='nametd'>" + displayName + "</td><td>" + item['score'] + "</td><td style='text-align:center !important;'>" + count + "</td></tr>";
+                                }
+                                else if (count <= 10){
+                                    text += "<tr style='vertical-align:middle' ><th scope='row' style='text-align:center;vertical-align:middle'><img src='images/trophy_20.png' class='trophy'/><td class='nametd'>" + displayName + "</td><td>" + item['score'] + "</td><td style='text-align:center !important;'>" + count + "</td></tr>";
+                                }
+                                else {
+                                    text += "<tr style='vertical-align:middle' ><th scope='row' style='text-align:center;vertical-align:middle'><img src='images/wreath.png' class='trophy'/><td class='nametd'>" + displayName + "</td><td>" + item['score'] + "</td><td style='text-align:center !important;'>" + count + "</td></tr>";
+                                }
+  
+                          }});
+                    document.getElementById("data").innerHTML = text;
+     
+                });
+            } catch (err) {
+                console.log(err);
+            }
+            
+
+        </script>
+        <script>
+            //Get the button
+            var mybutton = document.getElementById("myBtn");
+            
+            // When the user scrolls down 20px from the top of the document, show the button
+            window.onscroll = function() {scrollFunction()};
+            
+            function scrollFunction() {
+              if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                mybutton.style.display = "block";
+              } else {
+                mybutton.style.display = "none";
+              }
+            }
+            
+            // When the user clicks on the button, scroll to the top of the document
+            function topFunction() {
+              document.body.scrollTop = 0;
+              document.documentElement.scrollTop = 0;
+            }
+        </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </body>
+</html>
