@@ -99,7 +99,7 @@
             </div>
             </div>
             <div class="link">
-                <a href="https://www.hackerrank.com/contests/moraxtreme6/leaderboard" target="_blank" class="btn linkButton">Hackerrank Leaderboard</a>
+                <a href="https://www.hackerrank.com/contests/moraxtreme-7-0/leaderboard" target="_blank" class="btn linkButton">Hackerrank Leaderboard</a>
             </div>
             <hr/>
             <div class="note">
@@ -126,20 +126,22 @@
             var z = [];
             var s = [];
 
-            var competitionName = 'moraxtreme6'; // Replace your contest name
+            var competitionName = 'moraxtreme-7-0'; // Replace your contest name
             try {
                 fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.hackerrank.com/rest/contests/'+ competitionName +'/leaderboard?offset=0&limit=50&include_practice=true')}`) 
                     .then(response => {
                       if (response.ok) 
+                      
                         return response.json();
                       throw new Error('Network response was not ok.');
                     })
                     .then(data => {
-                        //var arrData = JSON.parse(data.contents);
-                        arrData = getResults();
-                        // console.log(arrData);
+                        
+                        arrData = JSON.parse(data.contents);
+                        // arrData = getResults();
+                        console.log(arrData);
                         if(arrData) {
-                            arrData.map(res => arr.push(res));
+                            arrData.models.map(res => arr.push(res));
                             // console.log(arr[0]);
                         } else {
                             console.log('Array is null');
@@ -161,7 +163,7 @@
                                     subC++;
                                 }
                                 preScore=item['score'];
-                                displayName =nms[y.indexOf(item['hacker'])];
+                                displayName =item['hacker'];
                                 //console.log(displayName);
                                 if (count == 1){
                                     text += "<tr style='vertical-align:middle' ><th scope='row' style='text-align:center;vertical-align:middle'><img src='images/trophy_1.png' class='trophy'/><td class='nametd'>" + displayName + "</td><td>" + item['score'] + "</td><td style='text-align:center !important;'>" + count + "</td></tr>";
