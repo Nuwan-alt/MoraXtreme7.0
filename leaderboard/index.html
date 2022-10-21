@@ -125,10 +125,11 @@
             var names = [];
             var z = [];
             var s = [];
-
+            var dateNow = Math.floor(Date.now()/60000);
+            console.log(dateNow)
             var competitionName = 'moraxtreme-7-0'; // Replace your contest name
             try {
-                fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.hackerrank.com/rest/contests/'+ competitionName +'/leaderboard?offset=0&limit=50&include_practice=true')}`) 
+                fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.hackerrank.com/rest/contests/'+ competitionName +'/leaderboard?offset=0&limit=50&include_practice=true')}&time=${dateNow}`) 
                     .then(response => {
                       if (response.ok) 
                       
@@ -146,14 +147,14 @@
                         } else {
                             console.log('Array is null');
                         }
-
+                  
                         var text = "";
                         var count=0;
                         var subC =0;
                         var preScore=1000000000000;
                         var displayName =""
                         arr.map((item) => {
-                            if (y.indexOf(item['hacker'])!=-1){
+                            if (true){
                                 if (item['score']!=preScore){
                                     count++;
                                     count+=subC;
@@ -164,7 +165,7 @@
                                 }
                                 preScore=item['score'];
                                 displayName =item['hacker'];
-                                //console.log(displayName);
+                                
                                 if (count == 1){
                                     text += "<tr style='vertical-align:middle' ><th scope='row' style='text-align:center;vertical-align:middle'><img src='images/trophy_1.png' class='trophy'/><td class='nametd'>" + displayName + "</td><td>" + item['score'] + "</td><td style='text-align:center !important;'>" + count + "</td></tr>";
                                 }
